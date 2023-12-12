@@ -7,19 +7,14 @@ from tokens import token_patterns
 
 def tokenize_c_code(code):
     tokens = []
-    pos = 0
 
-    while pos < len(code):
+    while code:
         for pattern, token_type in token_patterns:
-            match = re.match(pattern, code[pos:])
+            match = re.match(pattern, code)
             if match:
-                if token_type:
-                    if token_type != 'COMMENT':
-                        tokens.append((token_type, match.group(0)))
-                pos += match.end()
+                tokens.append((token_type, match.group(0)))
+                code = code[match.end():].lstrip()
                 break
-        else:
-            raise ValueError(f"Cannot tokenize: {code[pos:]}")
 
     return tokens
 
