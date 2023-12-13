@@ -2,7 +2,7 @@
 
 import re
 import sys
-sys.path.insert(0, '/home/nicktagliamonte/background')
+sys.path.insert(0, '/home/nicktagliamonte/compiler/background')
 from tokens import token_patterns
 
 def tokenize_c_code(code):

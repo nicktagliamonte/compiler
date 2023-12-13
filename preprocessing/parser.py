@@ -1,4 +1,8 @@
-import re
+class ASTNode:
+    def __init__(self, node_type, value=None, children=None):
+        self.node_type = node_type
+        self.value = value
+        self.children = children if children is not None else []
 
 class Parser:
     def __init__(self, tokens):
@@ -22,22 +26,25 @@ class Parser:
             raise ValueError(f"Expected {expected_type}, found {self.current_token}")
 
     def parse_program(self):
+        node = ASTNode('Program')
         self.match('KEYWORD')  # int
         self.match('IDENTIFIER')  # main
         self.match('PUNCTUATION')  # (
         self.match('KEYWORD')  # void
         self.match('PUNCTUATION')  # )
         self.match('PUNCTUATION')  # {
-        self.parse_statement()
+        node.children.append(self.parse_statement())
         self.match('PUNCTUATION')  # }
-        return "Parsing successful"
+        return node
 
     def parse_statement(self):
+        node = ASTNode('Statement')
         self.match('RETURN')  # return
-        self.parse_expression()
+        node.children.append(self.parse_expression())
         self.match('PUNCTUATION')  # ;
-        return "Statement parsed successfully"
+        return node
 
     def parse_expression(self):
-        self.match('NUMBER')  # 2
-        return "Expression parsed successfully"
+        node = ASTNode('Expression', value=self.current_token[1] if self.current_token[0] == 'NUMBER' else None)
+        self.match('NUMBER')  # 2 (for simplicity)
+        return node

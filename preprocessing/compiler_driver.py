@@ -1,7 +1,8 @@
 import sys
 import os
 import lexer2
-from parser import Parser
+from parser import *
+from assembly import *
 
 def preprocess():
     input_file = sys.argv[1]
@@ -31,15 +32,22 @@ def run_command(cmd):
     
 def process(filename):
     tokens = lex(filename)
-    parse(tokens)
+    ast = parse(tokens)
+    generate_assembly(ast)
     
 def lex(i_filename):
     tokens = lexer2.generate_tokens(i_filename)
     return tokens
 
 def parse(token_list):
-    parser_object = Parser(token_list)
-    parsed_result = parser_object.parse()
-    print(parsed_result)
+    parser = Parser(token_list)
+    ast_root = parser.parse()
+    return ast_root
+
+def generate_assembly(ast_root):
+    assembly_generator = AssemblyGenerator()
+    assembly_generator.translate(ast_root)
+    for line in assembly_generator.assembly_code:
+        print(line)
 
 preprocess()
