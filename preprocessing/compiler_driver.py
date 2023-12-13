@@ -4,6 +4,8 @@ import lexer2
 from parser import *
 from assembly import *
 
+#TODO: make the assembly an output file rather than just a collection of strings
+
 def preprocess():
     input_file = sys.argv[1]
     check_extension(input_file)
@@ -47,7 +49,5 @@ def parse(token_list):
 def generate_assembly(ast_root):
     assembly_generator = AssemblyGenerator()
     assembly_generator.translate(ast_root)
-    for line in assembly_generator.assembly_code:
-        print(line)
 
 preprocess()
